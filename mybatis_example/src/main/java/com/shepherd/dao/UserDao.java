@@ -6,10 +6,9 @@ import com.shepherd.domain.User;
 import java.util.List;
 
 /**
- * @author 黑马程序员
- * @Company http://www.ithiema.com
- *
- * 用户的持久层接口
+ * @author fjZheng
+ * @version 1.0
+ * @date 2021/3/25 10:03
  */
 public interface UserDao {
 
