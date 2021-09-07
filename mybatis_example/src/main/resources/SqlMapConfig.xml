@@ -16,7 +16,7 @@
 
             URI:Uniform Resource Identifier 统一资源标识符。它是在应用中可以唯一定位一个资源的。
     -->
-    <properties url="file:///F:\shepherd_code\mybatis_code_learn\mybatis_example\src\main\resources\jdbcConfig.properties">
+    <properties url="file:////Users/shepherdmy/shepherd_code/mybatis_code_learn/mybatis_example/src/main/resources/jdbcConfig.properties">
        <!-- <property name="driver" value="com.mysql.jdbc.Driver"></property>
         <property name="url" value="jdbc:mysql://localhost:3306/ssh"></property>
         <property name="username" value="root"></property>
