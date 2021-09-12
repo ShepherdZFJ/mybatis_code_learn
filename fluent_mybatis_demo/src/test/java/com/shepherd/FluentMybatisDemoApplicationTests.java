@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @SpringBootTest(classes = FluentMybatisDemoApplication.class)
 
@@ -40,6 +41,12 @@ class FluentMybatisDemoApplicationTests {
     }
 
     @Test
+    public void findById() {
+        final StudentScore studentScore = studentScoreMapper.findById(1);
+        System.out.println(studentScore);
+    }
+
+    @Test
     public void findOne(){
         StudentScoreQuery query = new StudentScoreQuery().where.studentId().eq(2).end();
         final StudentScore studentScore = studentScoreMapper.findOne(query);
@@ -48,7 +55,8 @@ class FluentMybatisDemoApplicationTests {
 
     @Test
     public void findAll() {
-        final List<StudentScore> studentScores = studentScoreMapper.listEntity(new StudentScoreQuery());
+        final StudentScoreQuery studentScoreQuery = new StudentScoreQuery().limit(1, 2);
+        final List<StudentScore> studentScores = studentScoreMapper.listEntity(studentScoreQuery);
         System.out.println(studentScores);
 
     }
@@ -66,7 +74,46 @@ class FluentMybatisDemoApplicationTests {
         //final StudentScoreQuery query = studentScoreMapper.query().select.apply("id", "subject", "score").end().where.studentId().eq(2).end();
         final StudentScoreQuery query = studentScoreMapper.query().select("id", "subject", "score").where.studentId().eq(2).end();
         final List<StudentScore> studentScores = studentScoreMapper.listEntity(query);
-        System.out.println(studentScores);
+        print(studentScores);
+    }
+
+
+    @Test
+    public void summaryScore() {
+        final StudentScoreQuery query = new StudentScoreQuery().select
+                .schoolTerm()
+                .subject()
+                .count.score("count")
+                .max.score("max_score")
+                .min.score("min_score")
+                .avg.score("avg_score")
+                .end()
+                .where.schoolTerm().ge(2000)
+                .and.subject().in(new String[]{"数学", "语文", "英语"})
+                .and.score().ge(60)
+                .and.isDeleted().eq(0)
+                .end()
+                .groupBy.schoolTerm().subject()
+                .end()
+                .having.count.score().gt(1)
+                .end()
+                .orderBy.schoolTerm().asc().subject().desc()
+                .end();
+        //studentScoreMapper.listPoJos()
+        final List<Map<String, Object>> maps = studentScoreMapper.listMaps(query);
+         maps.forEach(map ->{
+             System.out.println(map);
+         });
+
+
+    }
+
+    private void print(List<StudentScore> list) {
+        System.out.println();
+        list.forEach(studentScore -> {
+            System.out.println(studentScore);
+        });
+        System.out.println();
     }
 
 
